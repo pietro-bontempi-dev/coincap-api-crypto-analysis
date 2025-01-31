@@ -1,0 +1,36 @@
+CREATE DATABASE IF NOT EXISTS criptomoedas_db;
+USE criptomoedas_db;
+
+-- Tabela de Criptomoedas
+CREATE TABLE criptomoedas (
+    id VARCHAR(50) PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    simbolo VARCHAR(10) NOT NULL,
+    preco_brl DECIMAL(18, 2) NOT NULL,
+    volume_24h DECIMAL(18, 2) NOT NULL,
+    variacao_24h_percentual DECIMAL(10, 2) NOT NULL,
+    variacao_24h_brl DECIMAL(18, 2) NOT NULL
+);
+
+-- Tabela de Exchanges
+CREATE TABLE exchanges (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    id_exchange VARCHAR(50) UNIQUE NOT NULL,
+    volume_total_usd DECIMAL(18, 2) NOT NULL,
+    volume_percentual DECIMAL(10, 2) NOT NULL,
+    pares_negociacao INT NOT NULL,
+    url_exchange VARCHAR(255) NOT NULL
+);
+
+-- Tabela de Mercados (Relacionamento entre Criptomoedas e Exchanges)
+CREATE TABLE mercados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_criptomoeda VARCHAR(50),
+    id_exchange VARCHAR(100),
+    par_moedas VARCHAR(20) NOT NULL,
+    preco_usd DECIMAL(18, 2),
+    volume_usd_24h DECIMAL(18, 2),
+    trades_24h INT,
+    FOREIGN KEY (id_criptomoeda) REFERENCES criptomoedas(id) ON DELETE CASCADE
+);
